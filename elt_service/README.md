@@ -67,6 +67,16 @@ pip install -r requirements.txt
 python app.py
 ```
 
+5. **Drop tables**
+
+```sql
+DROP TABLE public.members;
+DROP TABLE public.organizations;
+DROP TABLE public.permissions;
+DROP TABLE public.repos;
+DROP TABLE public.teams;
+```
+
 ## Output
 - Raw and normalized data are saved under `data/raw/{run_id}/` and `data/normalized/{run_id}/`.
 - Data is loaded into the configured PostgreSQL database.

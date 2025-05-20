@@ -114,6 +114,16 @@ In another terminal, run:
 docker-compose down --remove-orphans
 ```
 
+### 6. **Drop tables**
+
+```sql
+DROP TABLE public.members;
+DROP TABLE public.organizations;
+DROP TABLE public.permissions;
+DROP TABLE public.repos;
+DROP TABLE public.teams;
+```
+
 ---
 
 ## Sample gRPC Requests
