@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER:-rig-user01}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rig-user01}
+      POSTGRES_DB: ${DB_NAME:-rig-demo-01}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+  elt_service:
+    build: ./elt_service
+    container_name: elt_service
+    depends_on:
+      - db
+    env_file:
+      - ./elt_service/.env
+    volumes:
+      - ./elt_service/data:/app/data
+    command: ["python", "app.py"]
+
+  grpc_api:
+    build: ./grpc_api
+    container_name: grpc_api
+    depends_on:
+      - db
+    env_file:
+      - ./grpc_api/.env
+    ports:
+      - "50051:50051"
+    # If you want to mount code for live reload in dev, uncomment below:
+    # volumes:
+    #   - ./grpc_api:/app
+
+  opa_service:
+    build: ./opa_service
+    container_name: opa_service
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./opa_service/policy.rego:/policies/policy.rego:ro
+    command: ["run", "--server", "--watch", "/policies"]
+
+volumes:
+  postgres_data:

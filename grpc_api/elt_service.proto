@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package eltservice;
+
+service ELTService {
+  rpc ListRepositories (ListRepositoriesRequest) returns (ListRepositoriesResponse);
+  rpc GetRepositoryAccessDetails (GetRepositoryAccessDetailsRequest) returns (GetRepositoryAccessDetailsResponse);
+  rpc EvaluatePolicy (EvaluatePolicyRequest) returns (EvaluatePolicyResponse);
+}
+
+message ListRepositoriesRequest {
+  string name_filter = 1;
+  bool private_only = 2;
+}
+
+message Repository {
+  string name = 1;
+  string full_name = 2;
+  string description = 3;
+  bool private = 4;
+}
+
+message ListRepositoriesResponse {
+  repeated Repository repositories = 1;
+}
+
+message GetRepositoryAccessDetailsRequest {
+  string repository_name = 1;
+}
+
+message AccessDetail {
+  string user_or_team = 1;
+  string type = 2; // "user" or "team"
+  string role = 3; // e.g. "admin", "write", "read"
+}
+
+message GetRepositoryAccessDetailsResponse {
+  repeated AccessDetail access = 1;
+}
+
+message EvaluatePolicyRequest {
+  string policy_name = 1;
+}
+
+message PolicyViolation {
+  string entity = 1;
+  string violation = 2;
+}
+
+message EvaluatePolicyResponse {
+  repeated PolicyViolation violations = 1;
+}

@@ -1,0 +1,10 @@
+grpcio
+grpcio-tools
+grpcio-reflection
+sqlalchemy
+asyncpg
+psycopg2-binary
+alembic
+python-dotenv
+pydantic>=2.0
+httpx
